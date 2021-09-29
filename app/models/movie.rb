@@ -4,13 +4,14 @@ class Movie < ActiveRecord::Base
   #  movies with those ratings
   # if ratings_list is nil, retrieve ALL movies
       if ratings_list == nil || ratings_list.length == 0
-           Movie.all
+           self.all
       else
-           Movie.where(rating: ratings_list).order(sort_column)
+           ratings_list = ratings_list.map {|rating| rating.upcase}
+           self.where(rating: ratings_list).order(sort_column)
       end
   end
 
   def self.all_ratings
-    Movie.distinct.pluck(:rating)
+    self.distinct.pluck(:rating)
   end
 end
